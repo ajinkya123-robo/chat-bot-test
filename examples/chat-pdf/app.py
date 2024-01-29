@@ -31,7 +31,7 @@ def embedchain_bot(db_path, api_key):
                 "config": {"collection_name": "chat-pdf", "dir": db_path, "allow_reset": True},
             },
             "embedder": {"provider": "openai", "config": {"api_key": api_key}},
-            "chunker": {"chunk_size": 2000, "chunk_overlap": 0, "length_function": "len"},
+            "chunker": {"chunk_size": 2000, "chunk_overlap": 100, "length_function": "len"},
         }
     )
 
@@ -54,9 +54,9 @@ def get_ec_app(api_key):
 
 
 with st.sidebar:
-    openai_access_token = st.text_input("OpenAI API Key", key="api_key", type="password")
-    "WE DO NOT STORE YOUR OPENAI KEY."
-    "Just paste your OpenAI API key here and we'll use it to power the chatbot. [Get your OpenAI API key](https://platform.openai.com/api-keys)"  # noqa: E501
+    openai_access_token = st.text_input("Secret Key", key="api_key", type="password")
+    
+      # noqa: E501
 
     if st.session_state.api_key:
         app = get_ec_app(st.session_state.api_key)
@@ -69,7 +69,7 @@ with st.sidebar:
             continue
         try:
             if not st.session_state.api_key:
-                st.error("Please enter your OpenAI API Key")
+                st.error("Please enter your Secret Key")
                 st.stop()
             temp_file_name = None
             with tempfile.NamedTemporaryFile(mode="wb", delete=False, prefix=file_name, suffix=".pdf") as f:
@@ -87,8 +87,8 @@ with st.sidebar:
             st.stop()
     st.session_state["add_pdf_files"] = add_pdf_files
 
-st.title("📄 Embedchain - Chat with PDF")
-styled_caption = '<p style="font-size: 17px; color: #aaa;">🚀 An <a href="https://github.com/embedchain/embedchain">Embedchain</a> app powered by OpenAI!</p>'  # noqa: E501
+st.title("Shellby Power Chat Bot")
+styled_caption = '<p style="font-size: 17px; color: #aaa;">An app powered by Feynman Innovations Pvt. Ltd.!</p>'  # noqa: E501
 st.markdown(styled_caption, unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
@@ -96,8 +96,9 @@ if "messages" not in st.session_state:
         {
             "role": "assistant",
             "content": """
-                Hi! I'm chatbot powered by Embedchain, which can answer questions about your pdf documents.\n
-                Upload your pdf documents here and I'll answer your questions about them! 
+                Hi! I'm chatbot which can answer questions about your pdf documents.\n
+                Upload your pdf documents here and I'll answer your questions about them! \n
+                Please be specific while asking questions. 
             """,
         }
     ]
@@ -108,7 +109,7 @@ for message in st.session_state.messages:
 
 if prompt := st.chat_input("Ask me anything!"):
     if not st.session_state.api_key:
-        st.error("Please enter your OpenAI API Key", icon="🤖")
+        st.error("Please enter your Secret Key", icon="🤖")
         st.stop()
 
     app = get_ec_app(st.session_state.api_key)
@@ -119,7 +120,7 @@ if prompt := st.chat_input("Ask me anything!"):
 
     with st.chat_message("assistant"):
         msg_placeholder = st.empty()
-        msg_placeholder.markdown("Thinking...")
+        msg_placeholder.markdown("I am Thinking...")
         full_response = ""
 
         q = queue.Queue()
